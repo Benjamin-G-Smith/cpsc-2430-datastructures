@@ -1,0 +1,72 @@
+// Ben Smith
+#include "hashTable.h"
+
+string removeSpaces(string input);
+
+int main(){
+
+  hashTable hTable;
+  ifstream input;
+  ofstream outfile;
+  string moving;
+  int max = 0;
+  string line,lineWord,temp;
+  int count = 0;
+  int fives = 0;
+
+
+  input.open("ulyss12.txt");
+
+  while(getline(input,line)){// looking through each line of the file
+
+    string lineString = line;
+    istringstream lineStream(lineString);
+
+    while(lineStream >> lineWord){ //looking at every word in each line
+      int srt = lineWord.length();
+      bool badword = false;
+      for(int i = 0; i < srt; i++){
+        if(!isalpha(lineWord[i])){
+          lineWord[i] = ' ';
+          badword = true;
+        }
+      }
+      string RlineWord = removeSpaces(lineWord);
+      int x = RlineWord.length();
+      if(x >= 5){
+        fives++;
+        hTable.insert(RlineWord);
+      }
+      count++;
+      if(!badword && srt > max){
+        max = srt;
+        temp = RlineWord;
+      }
+    }
+  }
+    input.close();
+    outfile.open("P5Output.txt");
+        hTable.dump(outfile);
+    int bloom = hTable.find("Bloom");
+    int hungry = hTable.find("hungry");
+    int laugh = hTable.find("laugh");
+    outfile << "bloom " << bloom << endl;
+    outfile << "hungry " << hungry << endl;
+    outfile << "laugh " << laugh << endl;
+
+
+    outfile.close();
+   hTable.printTable();
+
+
+  return 0;
+}
+string removeSpaces(string input)
+{
+  int l = input.length();
+  for(int i=0; i<l; i++){
+     if(input[i] == ' ') input.erase(i,1);
+   }
+  //input.erase(remove(input.begin(),input.end(),' '),input.end());
+  return input;
+}

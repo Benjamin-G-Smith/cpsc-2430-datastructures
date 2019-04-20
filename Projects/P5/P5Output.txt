@@ -1,0 +1,32 @@
+Top 25 words in file: 
+Position Occurencs word
+0 1330 there
+1 1153 Right
+2 946 often
+3 930 alter
+4 801 about
+5 561 rather
+6 538 things
+7 451 Tangier
+8 354 notion
+9 317 wouldnt
+10 295 remove
+11 295 better
+12 295 nothing
+13 269 solicit
+14 266 thought
+15 251 reprinted
+16 201 suppose
+17 170 perhaps
+18 160 fingers
+19 160 addition
+20 145 forward
+21 144 already
+22 142 prefers
+23 138 anything
+24 124 hardware
+
+Number of five length words 107772
+bloom 930
+hungry 36
+laugh 377
