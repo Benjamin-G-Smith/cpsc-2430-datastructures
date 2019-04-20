@@ -1,0 +1,84 @@
+// Ben Smith
+// 10/20/2017
+// L4.cpp
+
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+
+
+using namespace std;
+
+struct TNode {
+  int data;
+  TNode* left;
+  TNode* right;
+  TNode(int x = 0){
+    data = 0;
+    left = 0;
+    right = 0;
+  }
+};
+
+void constructTree(TNode*& root);
+void insert(TNode* auxPtr);
+void preOrder(TNode* root);
+void postOrder(TNode* root);
+void inOrder(TNode* root);
+
+int main(){
+  srand(time(0));
+  TNode* root = nullptr;
+  constructTree(root);
+  TNode* auxPtr = root;
+  int t = auxPtr->data;
+  cout <<"root "<< t << endl;
+  int count = 10;
+  while(count){
+    insert(auxPtr);
+    count--;
+  }
+  preOrder(auxPtr);
+  
+  return 0;
+}
+void preOrder(TNode* root){
+  TNode* temp = root;
+  if(root == nullptr){
+    return;
+  }
+  cout << temp->data << endl;
+  preOrder(temp->left);
+  preOrder(temp->right);
+}
+void insert(TNode* auxPtr){
+  TNode* newElement = new TNode;
+  if(auxPtr == nullptr){
+    newElement->data = rand() % 10 + 1;
+    auxPtr = newElement;
+  }
+  newElement->data = rand() % 10 + 1;
+
+  
+  TNode* parent = auxPtr;
+  while(auxPtr){
+    parent = auxPtr;
+    if(auxPtr->data > newElement->data){
+      auxPtr = auxPtr->right;
+    }
+    else{
+      auxPtr = auxPtr->left;
+    }
+  }
+  if(newElement->data < parent->data){
+    parent->left = newElement;
+  }
+  else
+    parent->right = newElement;
+}
+void constructTree(TNode*& root){
+  root = new TNode;
+  root->data = rand() % 10 + 1;
+  root->left = nullptr;
+  root->right = nullptr;
+}
