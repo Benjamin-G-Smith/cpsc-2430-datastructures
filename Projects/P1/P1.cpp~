@@ -1,0 +1,134 @@
+// Ben Smith
+// 10/2/2017
+// P1.cpp
+// Version: 1.0
+
+// PURPOSE: Allows the user to use a tPS package to create a program that
+//  reads input from a file and stores it into a stack.
+
+// INPUTS: The user is prompted for a file name that contains a list of
+//  numbers.
+
+// PROCESSING: The numbers provided in the inputfile are checked to see if
+//  they are a prime number. If the number is prime then the next prime in the
+//  sequence is found. That number is multiplied by two then pushed onto the
+//  stack. Once all of the numbers in the file have been read and processed the
+//  stack is then popped into an output file.
+
+// OUTPUTS: The user if prompted to enter a filename. If the file fails to open
+//  the user is asked to enter another file. The program also tells the user
+//  what stage of processing it is currently in.
+
+// EXAMPLES:
+// Please Enter the file: P1.txt
+// Processing complete...
+// Writing to file...
+// Successfully wrote to 'P1OutputFile.txt'
+// Goodbye...
+//
+// Please Enter the file: s
+// Error opening file...
+// Please Enter the file: s
+// Error opening file...
+// Please Enter the file: a
+// Error opening file...
+// Please Enter the file: q
+// Error opening file...
+// Please Enter the file: P1.txt
+// Processing complete...
+// Writing to file...
+// Successfully wrote to 'P1OutputFile.txt'
+// Goodbye...
+
+#include "tPS.cpp"
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+bool checkPrime(int fileNumber);
+int findNextPrime(int fileNumber);
+string getFileName();
+
+int main(){
+  Stack primeStack(100);
+  ifstream inputfile;
+  ofstream outputfile;
+  string fileName;
+  int data;
+  int pushNumber;
+  int tPN;
+  // Gets the filename
+  fileName = getFileName();
+  inputfile.open(fileName);
+  // Reads the contents into a stack
+  while(inputfile >> data){
+    if(checkPrime(data)){
+      pushNumber = findNextPrime(data)*2;
+      primeStack.push(pushNumber);
+    }
+  }
+  inputfile.close();
+  cout << "Processing complete..."<< endl;
+  cout << "Writing to file..." << endl;
+  outputfile.open("P1OutputFile.txt");
+  while(!primeStack.isEmpty()){
+    primeStack.pop(tPN);
+    outputfile << tPN << endl;
+  }
+  outputfile.close();
+  cout << "Successfully wrote to 'P1OutputFile.txt'" << endl;
+  cout << "Goodbye..." << endl;
+  return 0;
+}
+int findNextPrime(int fileNumber){
+  int num = fileNumber;
+  bool found = false;
+  while(!found){
+      if(num < 0){
+      num -= 2;
+      found = checkPrime(num);
+    }
+    else{
+      num += 2;
+      found = checkPrime(num);
+    }
+  }
+  return num;
+}
+bool checkPrime(int fileNumber)
+{
+  if(fileNumber % 2 != 0 && fileNumber != 2){
+    if(fileNumber < 0){
+    for(int i = -3; i > fileNumber; i--){
+      if(fileNumber % i == 0){
+        return false;
+      }
+    }
+  }
+  else{
+    for(int i = 3; i < fileNumber; i++){
+      if(fileNumber % i == 0){
+        return false;
+      }
+    }
+  }
+    return true;
+  }
+  return false;
+}
+string getFileName()
+{
+  ifstream inputfile;
+  string fileName;
+  cout << "Please Enter the file: ";
+  cin >> fileName;
+  inputfile.open(fileName);
+  while(inputfile.fail()){
+    cout << "Error opening file..." << endl;
+    cout << "Please Enter the file: ";
+    cin >> fileName;
+    inputfile.open(fileName);
+  }
+  return fileName;
+}
